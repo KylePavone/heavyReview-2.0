@@ -2,17 +2,16 @@ from passlib.context import CryptContext
 import re
 
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+class Utils:
+    PWD_CONTEXT = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
+    def get_password_hash(self, password: str):
+        return self.PWD_CONTEXT.hash(password)
 
-def get_password_hash(password: str):
-    return pwd_context.hash(password)
+    def verify_password(self, plain_password: str, hashed_password: str):
+        return self.PWD_CONTEXT.verify(plain_password, hashed_password)
 
-
-def verify_password(plain_password: str, hashed_password: str):
-    return pwd_context.verify(plain_password, hashed_password)
-
-
-def exp_pattern():
-    pattern = re.compile(r"^[а-яА-Яa-zA-Z\-]+$")
-    return pattern
+    @staticmethod
+    def exp_pattern():
+        pattern = re.compile(r"^[а-яА-Яa-zA-Z\-]+$")
+        return pattern

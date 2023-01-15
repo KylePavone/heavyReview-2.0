@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from pydantic import EmailStr
 from pydantic import validator
 import uuid
-from user.utils import utils
+from user.utils.utils import Utils
 
 
 class TunedModel(BaseModel):
@@ -20,10 +20,6 @@ class ShowUser(TunedModel):
     is_active: bool
 
 
-class UserList(ShowUser):
-    pass
-
-
 class UserCreate(BaseModel):
     name: str
     email: str
@@ -31,6 +27,7 @@ class UserCreate(BaseModel):
 
     @validator("name")
     def validate_name(cls, value):
+        utils = Utils()
         if not utils.exp_pattern().match(value):
             raise HTTPException(status_code=422, detail="Имя должно содержать только буквы")
         return value
@@ -40,3 +37,8 @@ class UserCreate(BaseModel):
         if len(value) < 5:
             raise HTTPException(status_code=422, detail="Слишком короткий  пароль")
         return value
+
+
+class UserLogin(TunedModel):
+    email: EmailStr
+    password: str

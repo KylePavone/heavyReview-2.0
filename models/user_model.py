@@ -4,7 +4,7 @@ from sqlalchemy import Column, Boolean, String, DateTime
 import datetime
 import uuid
 from database.database import Base
-from user.utils import utils
+from user.utils.utils import Utils
 
 
 class User(Base, SQLAlchemyBaseUserTable):
@@ -14,14 +14,13 @@ class User(Base, SQLAlchemyBaseUserTable):
     name = Column(String, nullable=False)
     email = Column(String, nullable=False, unique=True)
     hashed_password = Column(String, nullable=False)
-    date = Column(DateTime, default=datetime.datetime.now())
+    created_at = Column(DateTime, default=datetime.datetime.now())
     is_active = Column(Boolean, default=True)
-    is_verified = Column(Boolean, default=False)
-    is_superuser = Column(Boolean, default=True)
+    is_admin = Column(Boolean, default=True)
 
     def __init__(self, *args, **kwargs):
         super(User, self).__init__(*args, **kwargs)
-        self.hashed_password = self.hash_password()
+        self.hashed_password = self.hash_password(Utils())
 
-    def hash_password(self):
+    def hash_password(self, utils: Utils):
         return utils.get_password_hash(self.hashed_password)
