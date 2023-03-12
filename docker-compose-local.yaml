@@ -24,6 +24,13 @@ services:
       - "5433:5432"
     networks:
       - custom
+  admin:
+    image: adminer
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+    networks:
+      - custom
 networks:
   custom:
     driver: bridge

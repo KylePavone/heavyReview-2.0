@@ -11,23 +11,25 @@ class TunedModel(BaseModel):
 
 
 class CreateReview(TunedModel):
+    id: Optional[int] = None
     title: str
     content: str
-    images: List = []
-    created: datetime.datetime
-    likes_count: int
-
+    likes_count: Optional[int] = None
+    tags: List = []
+    
 
 class ShowReview(TunedModel):
     id: int
     title: str
     content: str
     images: List = []
-    created: datetime.datetime
+    updated: datetime.datetime
     likes_count: int
+    tags: List = []
 
 
 class UpdateReview(TunedModel):
     title: Optional[str] = None
     content: str
-    images: List = []
+    tags: List = []
+    updated: str

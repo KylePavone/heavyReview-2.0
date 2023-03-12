@@ -1,44 +1,33 @@
 import uuid
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
+from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
+from fastapi.openapi.models import Response
 from fastapi.routing import APIRouter
 # from user.routes.user_routes import UserRoutes
 from review.routes.review_routes import ReviewRoutes
 from review.controllers.review_controller import ReviewController
 # from user.controllers.user_controller import UserController
-from auth.schemas import UserRead, UserCreate,UserUpdate
-from auth.source import fastapi_users, auth_backend
+
+from fastapi_users.authentication import JWTStrategy
+
+
+origins = [
+    "http://localhost:4200",
+    "http://localhost:8000",
+]
 
 
 app = FastAPI(title="HeavyReview")
 
 
-app.include_router(
-    fastapi_users.get_auth_router(auth_backend),
-    prefix="/auth/jwt",
-    tags=["auth"],
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
-
-app.include_router(
-    fastapi_users.get_register_router(UserRead, UserCreate),
-    prefix="/auth",
-    tags=["auth"],
-)
-
-app.include_router(
-    fastapi_users.get_users_router(UserRead, UserUpdate),
-    prefix="/auth",
-    tags=["users"],
-)
-
-app.include_router(
-    fastapi_users.get_reset_password_router(),
-    prefix="/auth",
-    tags=["auth"],
-)
-
-# uc = UserController()
-# user_routes = UserRoutes(uc)
 
 rc = ReviewController()
 review_routes = ReviewRoutes(rc)

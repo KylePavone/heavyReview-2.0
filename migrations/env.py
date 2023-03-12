@@ -6,8 +6,9 @@ from sqlalchemy import pool
 from alembic import context
 
 from database.database import Base
-from models.user_model import User
 from models.review_model import Review
+from models.review_tag_model import review_tag
+
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

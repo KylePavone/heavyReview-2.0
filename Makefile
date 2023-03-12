@@ -1,4 +1,4 @@
 up:
-	docker compose -f docker-compose-local.yml up -d
+	docker compose -f docker-compose-local.yaml up -d
 down:
-	docker compose -f docker-compose-local.yml down && docker network prune --force
+	docker compose -f docker-compose-local.yaml down && docker network prune --force

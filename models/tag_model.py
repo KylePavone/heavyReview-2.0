@@ -8,5 +8,8 @@ class Tag(Base):
     __tablename__ = "tag"
 
     id = Column(Integer, primary_key=True)
-    review_id = Column(Integer, ForeignKey("review.id"))
-    tag_name = Column(String, unique=True, nullable=False)
+    name = Column(String, unique=True, nullable=False)
+    reviews = relationship("Review", secondary="review_tag", back_populates="tags")
+    
+    def __init__(self, *args, **kwargs):
+        super(Tag, self).__init__(*args, **kwargs)
